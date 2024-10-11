@@ -1,20 +1,26 @@
 import {
-  Affix,
-  Button,
   ScrollArea,
   SegmentedControl,
   SimpleGrid,
   TextInput,
   Title,
-  Transition,
 } from "@mantine/core";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import ProductCard from "../../components/products/ProductCard";
-import { Plus, Search } from "lucide-react";
-import { useWindowScroll } from "@mantine/hooks";
+import { Search } from "lucide-react";
 import { useState } from "react";
 export const Route = createFileRoute("/products/")({
   component: Products,
+  beforeLoad: async () => {
+    if(!pb.authStore.isValid) {
+      throw redirect({
+        to: "/auth",
+        search: {
+          redirect: location.href
+        }
+      })
+    }
+  }
 });
 
 function Products() {
@@ -22,7 +28,7 @@ function Products() {
 
   return (
     <div>
-      <TextInput mx={"md"} radius={"xl"} leftSection={<Search />} />
+      <TextInput mt={"sm"} mx={"md"} radius={"xl"} leftSection={<Search />} />
       <Title ta={"center"} my={"md"}>
         Categorias
       </Title>
