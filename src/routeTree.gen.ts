@@ -13,8 +13,12 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as SalesIndexImport } from './routes/sales/index'
 import { Route as ProductsIndexImport } from './routes/products/index'
+import { Route as ManageIndexImport } from './routes/manage/index'
 import { Route as AuthIndexImport } from './routes/auth/index'
+import { Route as ManageProductsIndexImport } from './routes/manage/products/index'
+import { Route as ManageCategoriesIndexImport } from './routes/manage/categories/index'
 
 // Create Virtual Routes
 
@@ -27,13 +31,33 @@ const IndexLazyRoute = IndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
+const SalesIndexRoute = SalesIndexImport.update({
+  path: '/sales/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const ProductsIndexRoute = ProductsIndexImport.update({
   path: '/products/',
   getParentRoute: () => rootRoute,
 } as any)
 
+const ManageIndexRoute = ManageIndexImport.update({
+  path: '/manage/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const AuthIndexRoute = AuthIndexImport.update({
   path: '/auth/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ManageProductsIndexRoute = ManageProductsIndexImport.update({
+  path: '/manage/products/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ManageCategoriesIndexRoute = ManageCategoriesIndexImport.update({
+  path: '/manage/categories/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -55,11 +79,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthIndexImport
       parentRoute: typeof rootRoute
     }
+    '/manage/': {
+      id: '/manage/'
+      path: '/manage'
+      fullPath: '/manage'
+      preLoaderRoute: typeof ManageIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/products/': {
       id: '/products/'
       path: '/products'
       fullPath: '/products'
       preLoaderRoute: typeof ProductsIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/sales/': {
+      id: '/sales/'
+      path: '/sales'
+      fullPath: '/sales'
+      preLoaderRoute: typeof SalesIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/manage/categories/': {
+      id: '/manage/categories/'
+      path: '/manage/categories'
+      fullPath: '/manage/categories'
+      preLoaderRoute: typeof ManageCategoriesIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/manage/products/': {
+      id: '/manage/products/'
+      path: '/manage/products'
+      fullPath: '/manage/products'
+      preLoaderRoute: typeof ManageProductsIndexImport
       parentRoute: typeof rootRoute
     }
   }
@@ -70,41 +122,83 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/auth': typeof AuthIndexRoute
+  '/manage': typeof ManageIndexRoute
   '/products': typeof ProductsIndexRoute
+  '/sales': typeof SalesIndexRoute
+  '/manage/categories': typeof ManageCategoriesIndexRoute
+  '/manage/products': typeof ManageProductsIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/auth': typeof AuthIndexRoute
+  '/manage': typeof ManageIndexRoute
   '/products': typeof ProductsIndexRoute
+  '/sales': typeof SalesIndexRoute
+  '/manage/categories': typeof ManageCategoriesIndexRoute
+  '/manage/products': typeof ManageProductsIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
   '/auth/': typeof AuthIndexRoute
+  '/manage/': typeof ManageIndexRoute
   '/products/': typeof ProductsIndexRoute
+  '/sales/': typeof SalesIndexRoute
+  '/manage/categories/': typeof ManageCategoriesIndexRoute
+  '/manage/products/': typeof ManageProductsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/products'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/manage'
+    | '/products'
+    | '/sales'
+    | '/manage/categories'
+    | '/manage/products'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/products'
-  id: '__root__' | '/' | '/auth/' | '/products/'
+  to:
+    | '/'
+    | '/auth'
+    | '/manage'
+    | '/products'
+    | '/sales'
+    | '/manage/categories'
+    | '/manage/products'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth/'
+    | '/manage/'
+    | '/products/'
+    | '/sales/'
+    | '/manage/categories/'
+    | '/manage/products/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   AuthIndexRoute: typeof AuthIndexRoute
+  ManageIndexRoute: typeof ManageIndexRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
+  SalesIndexRoute: typeof SalesIndexRoute
+  ManageCategoriesIndexRoute: typeof ManageCategoriesIndexRoute
+  ManageProductsIndexRoute: typeof ManageProductsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   AuthIndexRoute: AuthIndexRoute,
+  ManageIndexRoute: ManageIndexRoute,
   ProductsIndexRoute: ProductsIndexRoute,
+  SalesIndexRoute: SalesIndexRoute,
+  ManageCategoriesIndexRoute: ManageCategoriesIndexRoute,
+  ManageProductsIndexRoute: ManageProductsIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -121,7 +215,11 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/auth/",
-        "/products/"
+        "/manage/",
+        "/products/",
+        "/sales/",
+        "/manage/categories/",
+        "/manage/products/"
       ]
     },
     "/": {
@@ -130,8 +228,20 @@ export const routeTree = rootRoute
     "/auth/": {
       "filePath": "auth/index.tsx"
     },
+    "/manage/": {
+      "filePath": "manage/index.tsx"
+    },
     "/products/": {
       "filePath": "products/index.tsx"
+    },
+    "/sales/": {
+      "filePath": "sales/index.tsx"
+    },
+    "/manage/categories/": {
+      "filePath": "manage/categories/index.tsx"
+    },
+    "/manage/products/": {
+      "filePath": "manage/products/index.tsx"
     }
   }
 }

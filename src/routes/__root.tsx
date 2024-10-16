@@ -1,4 +1,3 @@
-import { useDisclosure } from "@mantine/hooks";
 import "./root.module.css";
 import {
   AppShell,
@@ -11,15 +10,46 @@ import {
 import { Notifications } from "@mantine/notifications";
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import { useState } from "react";
+import { rem } from "@mantine/core";
+import { Spotlight, type SpotlightActionData, spotlight } from "@mantine/spotlight";
+import { FileTextIcon, HomeIcon, LayoutDashboardIcon, SearchIcon } from "lucide-react";
 
+
+const actions: SpotlightActionData[] = [
+  {
+    id: "home",
+    label: "Home",
+    description: "Get to home page",
+    onClick: () => console.log("Home"),
+    leftSection: (
+      <HomeIcon style={{ width: rem(24), height: rem(24) }}  />
+    ),
+  },
+  {
+    id: "dashboard",
+    label: "Dashboard",
+    description: "Get full information about current system status",
+    onClick: () => console.log("Dashboard"),
+    leftSection: (
+      <LayoutDashboardIcon style={{ width: rem(24), height: rem(24) }}  />
+    ),
+  },
+  {
+    id: "documentation",
+    label: "Documentation",
+    description: "Visit documentation to lean more about all features",
+    onClick: () => console.log("Documentation"),
+    leftSection: (
+      <FileTextIcon style={{ width: rem(24), height: rem(24) }}  />
+    ),
+  },
+];
 const theme = createTheme({
   fontFamily: "Inter, sans-serif",
 });
 
 export const Route = createRootRoute({
   component: () => {
-    const [opened, { toggle }] = useDisclosure();
 
     return (
       <MantineProvider theme={theme}>
@@ -49,13 +79,26 @@ export const Route = createRootRoute({
                 fit="contain"
                 radius={"xl"}
               />
-              <Burger opened={opened} onClick={toggle} />
+              <Burger onClick={spotlight.open} />
             </Container>
           </AppShell.Header>
           <AppShell.Main>
             <Outlet />
           </AppShell.Main>
         </AppShell>
+        <Spotlight
+          actions={actions}
+          nothingFound="Nothing found..."
+          highlightQuery
+          searchProps={{
+            leftSection: (
+              <SearchIcon
+                style={{ width: rem(20), height: rem(20) }}
+              />
+            ),
+            placeholder: "Search...",
+          }}
+        />
         <TanStackRouterDevtools />
         <Notifications />
       </MantineProvider>

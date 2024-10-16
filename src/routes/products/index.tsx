@@ -1,26 +1,30 @@
 import {
+  Affix,
+  Button,
   ScrollArea,
   SegmentedControl,
   SimpleGrid,
   TextInput,
   Title,
+  Transition,
 } from "@mantine/core";
+import { Drawer } from "vaul";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import ProductCard from "../../components/products/ProductCard";
-import { Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { useState } from "react";
 export const Route = createFileRoute("/products/")({
   component: Products,
   beforeLoad: async () => {
-    if(!pb.authStore.isValid) {
+    if (!pb.authStore.isValid) {
       throw redirect({
         to: "/auth",
         search: {
-          redirect: location.href
-        }
-      })
+          redirect: location.href,
+        },
+      });
     }
-  }
+  },
 });
 
 function Products() {
@@ -67,19 +71,7 @@ function Products() {
           <ProductCard />
         </SimpleGrid>
       </ScrollArea>
-      {/* <Affix position={{ bottom: 0, left: 110 }}>
-        <Transition transition="slide-up" mounted={scrollPosition.y === 0}>
-          {(transitionStyles) => (
-        <Button
-          rightSection={<Plus />}
-          color="cyan"
-          style={{...transitionStyles, borderEndEndRadius: 0, borderEndStartRadius: 0}}
-        >
-          Agregar producto
-        </Button>
-          )}
-        </Transition>
-      </Affix> */}
+      
     </div>
   );
 }
