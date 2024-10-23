@@ -27,36 +27,43 @@ const IndexLazyImport = createFileRoute('/')()
 // Create/Update Routes
 
 const IndexLazyRoute = IndexLazyImport.update({
+  id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
 const SalesIndexRoute = SalesIndexImport.update({
+  id: '/sales/',
   path: '/sales/',
   getParentRoute: () => rootRoute,
 } as any)
 
 const ProductsIndexRoute = ProductsIndexImport.update({
+  id: '/products/',
   path: '/products/',
   getParentRoute: () => rootRoute,
 } as any)
 
 const ManageIndexRoute = ManageIndexImport.update({
+  id: '/manage/',
   path: '/manage/',
   getParentRoute: () => rootRoute,
 } as any)
 
 const AuthIndexRoute = AuthIndexImport.update({
+  id: '/auth/',
   path: '/auth/',
   getParentRoute: () => rootRoute,
 } as any)
 
 const ManageProductsIndexRoute = ManageProductsIndexImport.update({
+  id: '/manage/products/',
   path: '/manage/products/',
   getParentRoute: () => rootRoute,
 } as any)
 
 const ManageCategoriesIndexRoute = ManageCategoriesIndexImport.update({
+  id: '/manage/categories/',
   path: '/manage/categories/',
   getParentRoute: () => rootRoute,
 } as any)
