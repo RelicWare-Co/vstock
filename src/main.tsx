@@ -2,12 +2,12 @@ import "./index.css";
 import "@mantine/core/styles.css"
 import "@mantine/notifications/styles.css"
 import '@mantine/spotlight/styles.css';
-import React, { StrictMode } from 'react'
+import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import Pocketbase from "pocketbase";
 
-globalThis.pb = new Pocketbase("http://127.0.0.1:8090")
+globalThis.pb = new Pocketbase(import.meta.env.VITE_PB_URL)
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'

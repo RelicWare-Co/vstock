@@ -12,6 +12,10 @@ export default defineConfig({
         find: "@",
         replacement: fileURLToPath(new URL("./", import.meta.url)),
       },
+      {
+        find: '@tabler/icons-react',
+        replacement: '@tabler/icons-react/dist/esm/icons/index.mjs',
+      },
     ],
   },
 });

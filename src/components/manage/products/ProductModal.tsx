@@ -11,18 +11,28 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+
+export type ProductModalModes = "edit" | "create";
 
 export default function ProductModal({
   isOpen,
   onClose,
+  mode,
+  editId,
+  refetch,
 }: {
   isOpen: boolean;
   onClose: () => void;
+  mode: ProductModalModes;
+  editId: string | undefined;
+  refetch: () => void;
 }) {
   const { data, isLoading } = useQuery({
     queryKey: ["categories"],
     queryFn: () => pb.collection("categories").getFullList(),
-  })
+  });
+  const [isCreating, setIsCreating] = useState(false);
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -50,12 +60,33 @@ export default function ProductModal({
         </Title>
       </Modal.Title>
       <Modal.Body h={"85dvh"}>
-        <LoadingOverlay visible={isLoading} />
+        <LoadingOverlay visible={isLoading || isCreating} />
         <Stack justify="space-between" h={"100%"}>
-          <form onSubmit={form.onSubmit((values) => pb.collection("products").create(values))}>
+          <form
+            onSubmit={form.onSubmit(async (values) => {
+              setIsCreating(true);
+              if (mode === "create") {
+                await pb.collection("products").create(values);
+              }
+              if (mode === "edit" && editId) {
+                await pb.collection("products").update(editId, values);
+              }
+              setIsCreating(false);
+              onClose();
+              refetch();
+            })}
+          >
             <Stack mt={"md"} w={"100%"}>
-              <TextInput label="Nombre del Producto" key={form.key("name")} {...form.getInputProps("name")} />
-              <Textarea label="Descripcion" key={form.key("description")} {...form.getInputProps("description")} />
+              <TextInput
+                label="Nombre del Producto"
+                key={form.key("name")}
+                {...form.getInputProps("name")}
+              />
+              <Textarea
+                label="Descripcion"
+                key={form.key("description")}
+                {...form.getInputProps("description")}
+              />
               <NumberInput
                 label="Costo"
                 clampBehavior="strict"
@@ -77,7 +108,10 @@ export default function ProductModal({
               <Select
                 searchable
                 label="Categoria"
-                data={data?.map((category) => ({ value: category.id, label: category.name }))}
+                data={data?.map((category) => ({
+                  value: category.id,
+                  label: category.name,
+                }))}
                 key={form.key("category")}
                 {...form.getInputProps("category")}
               />
