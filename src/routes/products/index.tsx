@@ -1,17 +1,13 @@
 import {
-  Affix,
-  Button,
   ScrollArea,
   SegmentedControl,
   SimpleGrid,
   TextInput,
   Title,
-  Transition,
 } from "@mantine/core";
-import { Drawer } from "vaul";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import ProductCard from "../../components/products/ProductCard";
-import { Plus, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { useState } from "react";
 export const Route = createFileRoute("/products/")({
   component: Products,
@@ -28,7 +24,7 @@ export const Route = createFileRoute("/products/")({
 });
 
 function Products() {
-  const [scrollPosition, onScrollPositionChange] = useState({ x: 0, y: 0 });
+  const [_scrollPosition, onScrollPositionChange] = useState({ x: 0, y: 0 });
 
   return (
     <div>
